@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding="utf-8"?>
+
+<bibliography
+    xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xl="http://www.w3.org/1999/xlink"
+    
+    xml:id="reference">
+
+<bibliodiv><title>Word VBA</title>
+    <bibliomixed xml:id="ref.word_vba_learn_record">
+      <bibliosource><link xl:href="http://www.crifan.com/order_word_vba_learning_records/"> 【整理】word vba学习记录</link></bibliosource>
+      <author>crifan</author>
+    </bibliomixed>
+
+    <bibliomixed xml:id="ref.vba_basic_intro">
+      <bibliosource><link xl:href="http://club.excelhome.net/thread-470603-1-1.html">菜鸟谈VBA最最基础入门《原创》 </link></bibliosource>
+      <author>叶枫</author>
+    </bibliomixed>
+
+    <bibliomixed xml:id="ref.ms_word_vba">
+      <bibliosource><link xl:href="http://d.download.csdn.net/down/1924671/taozx11">Word VBA 教程：Microsoft Word Visual Basic 参考</link></bibliosource>
+      <author>taozx11</author>
+    </bibliomixed>
+
+    <bibliomixed xml:id="ref.word_vba_internal_help">
+      <bibliosource>Word VBA内置的Help</bibliosource>
+      <author>Microsoft</author>
+    </bibliomixed>
+
+    <bibliomixed xml:id="ref.vba_get_heading_number">
+      <bibliosource><link xl:href="http://www.crifan.com/resolved_word_vba_the_title_to_get_the_current_selection_number__title_number__heading_level__heading_number/">【解决】word VBA中,获取当前所选内容的标题序号/标题数字/heading level/heading number</link></bibliosource>
+      <author>crifan</author>
+    </bibliomixed>
+</bibliodiv>
+
+<bibliodiv><title>其他</title>
+
+    <bibliomixed xml:id="ref.blogstowordpress_usage">
+      <bibliosource><link xl:href="http://www.crifan.com/crifan_released_all/website/python/blogstowordpress/usage_example/">BlogsToWordPress 的用法的举例说明</link></bibliosource>
+      <author>Crifan</author>
+    </bibliomixed>
+
+</bibliodiv>
+
+</bibliography>

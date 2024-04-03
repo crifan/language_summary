@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding="utf-8"?>
+
+<!DOCTYPE chapter
+[
+<!ENTITY % crl_ent PUBLIC "crl.ent" 'http://www.crifan.com/files/res/docbook/entity/crl.ent'>
+%crl_ent;
+
+]>
+
+<chapter
+    xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xl="http://www.w3.org/1999/xlink"
+    
+    xml:id="ch04_web_lan"
+>
+<title>网络相关的语言</title>
+    <abstract></abstract>
+    <para>此处记录一些和网络相关的一些语言，比如HTML，XML等</para>
+
+    <sect1 xml:id="lan.xml" ><title>XML</title>
+        <para>此处记录一些关于XML的学习心得和一些有价值的参考资料。</para>
+        <para></para>
+        <sect2><title>XML相关的参考资料</title>
+            <orderedlist>
+                <listitem><emphasis>XML标准概览</emphasis>
+                    <para>目前已有的和XML相关的一些标准的概览，可参考：</para>
+                    <orderedlist>
+                        <listitem><link xl:href="http://www.ibm.com/developerworks/cn/xml/x-stand1/index.html">XML 标准概览: 第 1 部分</link></listitem>
+                        <listitem><link xl:href="http://www.ibm.com/developerworks/cn/xml/x-stand4/">XML 标准概览: 第 4 部分</link></listitem>
+                    </orderedlist>
+                </listitem>
+            </orderedlist>
+        </sect2>
+    </sect1>
+
+    <sect1 xml:id="lan.html" ><title>HTML</title>
+        <para>此处记录一些关于HTML的学习心得，以及一些有价值的参考资料。</para>
+        <para></para>
+        
+        <sect2><title>HTMl学习心得</title>
+            <orderedlist>
+                <listitem><emphasis>HTML页面功能不正常，应该首先去检查对应的HTML源代码是否正常</emphasis>
+                    <para>在折腾<link xl:href="http://www.crifan.com/record_add_support_include_html_static_page_into_google_xml_sitemap/">【记录】折腾给WordPress Google XML Sitemap中添加支持子目录自动扫描功能，包含HTML静态页面等可识别的格式</link>的过程中，发现一个问题：</para>
+                    <para>当（混了和php和javascript的）HTML页面中，某功能不正常，结果调试了很长时间，最终发现，原来是某段用于生成HTML代码的javascript代码，不小心多写了个双引号，导致生成的HTML代码不正常，功能因此也就不正常了。</para>
+                    <para>但是在此过程中，没有任何的提示，因此也就不知道是此处错了，所以，最大的感慨是，对于HTML页面来说，如果功能上不正常的话，那么第一时间应该去看看与此相关的HTML代码是否正确。.</para>
+                </listitem>
+                <listitem><emphasis></emphasis>
+                    <para></para>
+                    <para></para>
+                    <para></para>
+                </listitem>
+            </orderedlist>
+            <para></para>
+            <para></para>
+            <para></para>
+            <para></para>
+            <para></para>
+        </sect2>
+                
+        <sect2 xml:id="html_refer"><title>HTML相关的参考资料</title>
+            <orderedlist>
+                <listitem><emphasis>HTML实体定义，特殊字符等资料</emphasis>
+                    <para>特殊字符方面，已有有人整理出来，把字符都显示出来，并且分门别类列出来了，很不错。</para>
+                    <para>下面列出几个值得推荐的：</para>
+                    <itemizedlist>
+                        <listitem><link xl:href="http://www.qianduan.net/html-special-characters-daquan.html">HTML特殊字符大全</link>
+                            <para>特点：中文的，分类很全</para>
+                        </listitem>
+                        <listitem><link xl:href="http://brucejohnson.ca/SpecialCharacters.html">HTML Special Characters</link>
+                            <para>特点：英文的，也分类了</para>
+                        </listitem>
+                    </itemizedlist>
+                </listitem>
+                <listitem><emphasis>HTML的颜色和对应的名字</emphasis>
+                    <itemizedlist>
+                        <listitem><link xl:href="http://www.html-color-names.com/color-chart.php">HTML Color Chart with 140 Color Names</link>
+                            <para>特点：关于HTML中的颜色和对应的名字，这个页面很简洁直观</para>
+                        </listitem>
+                        <listitem><link xl:href="http://www.w3schools.com/html/html_colornames.asp">HTML Color Names</link>
+                            <para>特点：英文。这个页面的内容，非常全，更加不错</para>
+                        </listitem>
+                    </itemizedlist>
+                    <para></para>
+                </listitem>
+                <listitem><emphasis>Unicode字符集</emphasis>
+                    <itemizedlist>
+                        <listitem><link xl:href="http://www.tamasoft.co.jp/en/general-info/unicode.html">Unicode Table</link>
+                            <para>特点：关于Unicode字符集的相关字符的表格，几乎包括了所有字符。</para>
+                        </listitem>
+                        <listitem><link xl:href="http://unicodelookup.com/">Unicode Lookup</link>
+                            <para>特点：可以找到每个Unicode的各种进制的值之外，还有对应的HTML的entity</para>
+                        </listitem>
+                    </itemizedlist>
+                </listitem>
+                <listitem><emphasis>BIG5</emphasis>
+                    <orderedlist>
+                        <listitem>BIG5码表
+                            <itemizedlist>
+                                <listitem><link xl:href="http://ash.jp/code/cn/big5tbl.htm">Big5 (Traditional Chinese) character code table</link>
+                                    <para>特点：单一页面，包含了所有的字符，方便查找。</para>
+                                </listitem>
+                                <listitem><link xl:href="http://www.khngai.com/chinese/charmap/tblbig.php">Big 5 Code Table</link>
+                                    <para>特点：多个页面，不是很方便查找。但是带有颜色区分，便于分辨各种类型的字符。</para>
+                                </listitem>
+                            </itemizedlist>
+                        </listitem>
+                        <listitem>简体中文和繁体中文之间的转换
+                            <para><link xl:href="http://www.j4.com.tw/big-gb/">简繁转换</link></para>
+                        </listitem>
+                    </orderedlist>
+                    <para></para>
+                </listitem>
+            </orderedlist>
+        </sect2>
+        <para></para>
+    </sect1>
+
+</chapter>

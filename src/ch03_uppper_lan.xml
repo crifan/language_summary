@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding="utf-8"?>
+
+<!DOCTYPE chapter
+[
+
+<!ENTITY % crl_ent PUBLIC "crl.ent" 'http://www.crifan.com/files/res/docbook/entity/crl.ent'>
+%crl_ent;
+
+]>
+
+<chapter
+    xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xl="http://www.w3.org/1999/xlink"
+    
+    xml:id="ch03_uppper_lan">
+<title>上层语言</title>
+<abstract></abstract>
+    <sect1><title>上层语言综述</title>
+        <para></para>
+        <para></para>
+        <para></para>
+        <para></para>
+    </sect1>
+
+    <sect1 xml:id="lan.csharp"><title>C#学习心得</title>
+        <para>关于C#的学习心得，已移至这里：<link xl:href="http://www.crifan.com/files/doc/docbook/csharp_summary/release/html/csharp_summary.html">C#学习心得</link></para>
+    </sect1>
+    
+    <sect1 xml:id="lan.cpp"><title>C++</title>
+        <sect2><title>C++学习笔记</title>
+            <para>学习C++过程中，遇到的一些内容，觉得有必要记录下来，以供后用。</para>
+            <para>其中主要是之前用C语言，所以接触C++，有些内容不太习惯，因此记录C++中和C不同的，需要注意的部分内容。</para>
+            <orderedlist>
+                <listitem><emphasis>protected，public，private</emphasis>
+                    <para>对应的含义，用下表，可以很容易区分：</para>
+                    <table xml:id="tbl.prot_pub_priv" ><title>protected，public，private之间的区别</title>
+                        <tgroup cols="4" >
+                            <colspec colnum="1" colname="col1" colwidth="1*" />
+                            <colspec colnum="2" colname="col2" colwidth="1*" />
+                            <colspec colnum="3" colname="col3" colwidth="1*" />
+                            <colspec colnum="4" colname="col4" colwidth="1*" />
+                            
+                            <thead align="center" >
+                                <row><entry></entry><entry namest="col2" nameend="col4" >关键字</entry></row>
+                                <row><entry></entry><entry>Private 私有</entry><entry>Protected 受保护</entry><entry>Public 公有</entry></row>
+                            </thead>
+                            
+                            <tbody>
+                                <row><entry morerows="3" valign="middle" >对应作用（允许谁访问）</entry><entry>友元函数</entry><entry>友元函数</entry><entry>友元函数</entry></row>
+                                <row><entry colname="col2" ><emphasis>该类自己的函数</emphasis></entry><entry>该类自己的函数</entry><entry>该类自己的函数</entry></row>
+                                <row><entry colname="col2" ></entry><entry><emphasis>子类的函数</emphasis></entry><entry>子类的函数</entry></row>
+                                <row><entry colname="col2" ></entry><entry></entry><entry><emphasis>该类的对象</emphasis></entry></row>
+                            </tbody>
+                        </tgroup>
+                    </table>
+                </listitem>
+                <listitem><emphasis>函数 带默认值的参数</emphasis>
+                    <para>可以在调用函数的时候，不给那些带默认值的参数赋值，即调用函数时候，参数少了几个。</para>
+                    <para>不过要注意的是，带默认值的参数，肯定都是从最右边的一个或几个。</para>
+                </listitem>
+                <listitem><emphasis>枚举变量的引用</emphasis>
+                    <para>类名：：某一枚举变量值</para>
+                    <para>而不是C语言中直接引用：某一枚举变量值</para>
+                </listitem>
+                <listitem><emphasis>用new生成的变量与直接定义变量的区别</emphasis>
+                    <para>知道new要和delete配对使用。</para>
+                    <para>直接定义变量：函数中的局部变量的话，在栈stack中分配，静态分配，函数调用完，自动释放内存，即编译器自己帮你释放内存，不需要你关心。</para>
+                    <para>全局的话，应该和C语言中的没区别，就是普通全局变量，始终占用内容，会增加程序耦合度，在可以的情况下，应尽量少用。</para>
+                    <para></para>
+                    <para>用new生成的变量：动态分配，在堆heap中分配，所以要自己关心内存的使用，在不用此变量的时候，用delete释放内存，否则就产生了内存泄露，即有部分不再使用的变量存在于内存中，属于站着茅坑不拉屎的类型。</para>
+                    <para>一般常见用法一直就是在类的构造函数中用new分配内存给某个变量，然后对应地在析构函数中用delete释放对应变量所占的内存。</para>
+                </listitem>
+                <listitem><emphasis>重载Overload</emphasis>
+                    <para>同一个函数名，参数的个数和类型不同。</para>
+                </listitem>
+                <listitem><emphasis>关于继承inherit</emphasis>
+                    <para>没啥多说的，只是自己不太熟悉，导致看到某个类B调用某个函数func1，结果在B类的定义中找不到，最后才发现原来是B类继承A类，A类中有public的函数func1，因此才有B可以调用func1。</para>
+                </listitem>
+            </orderedlist>
+        </sect2>
+    </sect1>
+
+    <sect1 xml:id="advanced_lan_not_direct_access_hw"><title>为何高级语言不能直接操作硬件？</title>
+		<para>TODO：整理<link xl:href="http://bbs.csdn.net/topics/380163054">为什么说汇编语言可以直接操作硬件-CSDN论坛-CSDN.NET-中国最大的IT技术社区</link>到这里。</para>
+		<para></para>
+		<para></para>
+    </sect1>
+
+</chapter>

@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding="utf-8"?>
+
+<!DOCTYPE sect1
+[
+
+<!ENTITY % crl_ent PUBLIC "crl.ent" 'http://www.crifan.com/files/res/docbook/entity/crl.ent'>
+%crl_ent;
+
+]>
+
+<sect1
+    xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xl="http://www.w3.org/1999/xlink"
+    
+    xml:id="lan.windows_bat">
+<title>Windows Batch File</title>
+
+    <sect2 xml:id="win_bat_intro"><title>Windows Batch File简介</title>
+        <para></para>
+        <para></para>
+        <para></para>
+    </sect2>
+
+    <sect2 xml:id="win_bat_learn_summary"><title>Windows Batch File学习心得</title>
+        <para></para>
+        <para></para>
+        <para></para>
+    </sect2>
+
+    <sect2 xml:id="win_bat_refer"><title>Windows Batch File参考资料</title>
+        <orderedlist>
+            <listitem><emphasis></emphasis>
+            </listitem>
+        </orderedlist>
+    </sect2>
+
+</sect1>

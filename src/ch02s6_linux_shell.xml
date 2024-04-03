@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding="utf-8"?>
+
+<!DOCTYPE sect1
+[
+<!ENTITY % crl_ent PUBLIC "crl.ent" 'http://www.crifan.com/files/res/docbook/entity/crl.ent'>
+%crl_ent;
+
+]>
+
+<sect1
+    xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xl="http://www.w3.org/1999/xlink"
+    
+    xml:id="lan.linux_shell">
+<title>Linux Shell</title>
+
+    <sect2><title>Linux Shell学习心得</title>
+        <orderedlist>
+            <listitem><emphasis>递归函数中的变量值被下层调用所修改的问题</emphasis>
+                <para>由于Linux shell中默认定义的变量都是全局的，所以导致在递归函数中定义的变量，在下一层调用中修改了值后，返回上一层，改变量已被修改，导致运行结果不对。</para>
+                <para>解决办法就是，给相应的变量加上local前缀，表示是局部变量，即可。</para>
+                <para>详情参看：<link xl:href="http://www.crifan.com/linux_shell_recursive_function_variable_be_changed/">﻿【已解决】Linux Shell中，递归函数调用过程中，变量的值被改变，即下层调用会影响上层中的变量的值</link></para>
+            </listitem>
+            
+            <listitem><emphasis>./xxx.sh: line xx: [: too many arguments</emphasis>
+                <para>问题原因：参数太多</para>
+                <para>比如，使用<programlisting language="shell">if [ -d $item_full_path ]; then</programlisting>去判断item_full_path是否为文件夹，但是如果传入的参数是<screen>arm_vs_mips.xml - Copy_bak</screen>，则会出现too many arguments的错误。因为对于shell中的-d去判断一个参数是否为文件夹的时候，此参数，只能是一个字符串，而不能是多个字符串，而此处的<screen>arm_vs_mips.xml - Copy_bak</screen>虽然物理上表示对应的某个文件，但是作为此处的参数传递进来的话，的确就是三个字符串了：
+                <screen>
+arm_vs_mips.xml
+-
+Copy_bak
+                </screen>。</para>
+                <para>解决办法：自己去找错误的位置，是不是也是由于类似的，使用某个功能的时候，传递的参数，超过该功能所期望的参数的个数了。如果超过了，估计多数情况下，也都是你自己使用不当，或者没有进行合适的处理而导致的。</para>
+            </listitem>
+            
+            <listitem><emphasis>文件名中包含空格的问题</emphasis>
+                <para>在用shell过程中，经常会遇到处理文件名中包含空格的问题</para>
+                <para>对此，参考<link xl:href="http://hi.baidu.com.cn/pojoflcc/blog/item/97123b1f6a89b5094034176f.html">Linux shell脚本 遍历带空格的文件名</link>，尝试了用tr将ls输出结果替换为问号，的确是可以的：</para>
+                <screen>
+CLi@PC-CLI-1 ~/develop/docbook/books/arm_vs_mips/src
+$ ls
+arm_vs_mips.xml      arm_vs_mips_____xml - Copy_bak    glossary.xml  Makefile       remove_bak.sh
+arm_vs_mips.xml.bak  ch01_reduced_instruction_set.xml  images        reference.xml  remove_bak.sh.bak
+
+CLi@PC-CLI-1 ~/develop/docbook/books/arm_vs_mips/src
+$ ls | tr " " "\?"
+arm_vs_mips.xml
+arm_vs_mips.xml.bak
+arm_vs_mips_____xml?-?Copy_bak
+ch01_reduced_instruction_set.xml
+glossary.xml
+images
+Makefile
+reference.xml
+remove_bak.sh
+remove_bak.sh.bak
+                </screen>
+                <tip><title>cygwin中的tr在shell中工作不正常？ -&gt; 实际上是cygwin中的显示有问题</title>
+                    <para>不过，另外提及一下，目前遇到一个问题，就是上述的代码：<screen>ls | tr " " "\?"</screen>放到shell中执行：
+                        <screen>
+local sub_folders=`ls $input_folder | tr "\32" "\?"`;
+echo '444 sub_folders='$sub_folders;
+                        </screen>
+                     当时结果是tr无效，输出的效果中文件名中的空格没有被替换为问号。
+                    </para>
+                    <para>其中当前环境是用的Cygwin，tr版本为：
+                        <screen>
+CLi@PC-CLI-1 ~/develop/docbook/books/arm_vs_mips/src
+$ tr --version
+tr (GNU coreutils) 8.15
+Packaged by Cygwin (8.15-1)
+Copyright (C) 2012 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Jim Meyering.
+                        </screen>
+                    </para>
+                    <para>后来终于经过一番折腾，而搞清楚了：</para>
+                    <para>把问号换成其他的，比如&lt;,&gt;等：
+                        <screen>
+local sub_folders=`ls $input_folder | tr "\32" "\&lt;"`;
+local sub_folders=`ls $input_folder | tr "\32" "\&gt;"`;
+                        </screen>
+                        也都是可以看到替换的结果的。</para>
+                    <para>并且也可以用：
+                        <screen>
+each_item=`echo $each_item | tr "\&lt;" " "`;
+each_item=`echo $each_item | tr "\&gt;" " "`;
+                        </screen>
+                        再替换回来的。
+                    </para>
+                    <para>而对于上述的问号替换空格，虽然没有显示出来，但是如果没有此操作的话，后面<programlisting>for each_item in $sub_folders; do</programlisting>所得到的每个item中，<screen>arm_vs_mips.xml - Copy_bak</screen>就会变成三个字符串：
+                    <screen>
+arm_vs_mips.xml
+-
+Copy_bak
+                    </screen></para>
+                    <para>而有此操作，后面得到的就是一个独立的字符串：<screen>arm_vs_mips.xml - Copy_bak</screen></para>
+                    <para>所以明白了根本原因是，Cygwin中，没有正确的显示出来，实际上，是已经替换成功的了。</para>
+                    <para>不过很悲催的是，单独echo问号字符，却又是可以正常显示的。。。</para>
+                    <para>说实话，这样的bug，真的很让人崩溃。。。太浪费时间了。。。</para>
+                </tip>
+            </listitem>
+        </orderedlist>
+    </sect2>
+
+    <sect2><title>Linux Shell参考资料</title>
+        <orderedlist>
+            <listitem><emphasis><link xl:href="http://www.freeos.com/guides/lsst/index.html">Linux Shell Scripting Tutorial - A Beginner's handbook</link></emphasis>
+                <para>用经典的那句中文介绍此书就是，对于Linux Shell的"从入门到精通",^_^</para>
+                <para>专门提及一下常用的供参考的章节：</para>
+                <itemizedlist>
+                    <listitem><link xl:href="http://www.freeos.com/guides/lsst/ch03sec02.html">test command or [ expr ]</link></listitem>
+                </itemizedlist>
+            </listitem>
+        </orderedlist>
+    </sect2>
+
+</sect1>

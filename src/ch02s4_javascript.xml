@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding="utf-8"?>
+
+<!DOCTYPE sect1
+[
+
+<!ENTITY % crl_ent PUBLIC "crl.ent" 'http://www.crifan.com/files/res/docbook/entity/crl.ent'>
+%crl_ent;
+
+]>
+
+<sect1
+    xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xl="http://www.w3.org/1999/xlink"
+    
+    xml:id="lan.javascript">
+<title>Javascript</title>
+
+    <sect2><title>javascript学习记录</title>
+        <orderedlist>
+            <listitem><emphasis>&lt;script&gt;中没有指定脚本语言类型</emphasis>
+                <para>网上介绍：</para>
+                <para><link xl:href="http://www.w3school.com.cn/tags/tag_script.asp" /></para>
+                <para>script的语法，说是script中type是必须的，即必须要写成：</para>
+                <programlisting>
+<![CDATA[
+<script type="XXX">
+....
+</script>
+]]>
+                </programlisting>
+                <para>但是实际上看到一些网页，比如：</para>
+                <para><link xl:href="http://hi.baidu.com/recommend_music/blog/item/5fe2e923cee1f55e93580718.html" /></para>
+                <para>的html源代码中，script没有指定type：</para>
+                <programlisting>
+<![CDATA[
+ <script>
+     //*****there is some function。
+     function checkMail(s) {
+         var pattern=/w+@w+.[a-z]+/;
+         if(pattern.test(s)) {
+            return true;
+         } else {
+           return false;
+        }
+     }
+......
+</script>
+]]>
+                </programlisting>
+                <para>一直很奇怪，为何可以用。</para>
+                <para>后来终于找到解释了：</para>
+                <para><link xl:href="http://blog.csdn.net/slalx/article/details/5093756" /></para>
+                <blockquote>
+                    <para>二．指定脚本语言的方式：</para>
+                    <para>1.指定整个文档默认的脚本语言。</para>
+                    <programlisting>
+<![CDATA[
+<META http-equiv="Content-Script-Type" content="type">
+]]>
+                    </programlisting>
+                    <para>content：指定脚本语言的类型如："text/tcl", "text/javascript", "text/vbscript".</para>
+                    <para>由于文档默认的脚本类型是JavaScript，因此我们在使用JavaScript时最简单且兼容性最好的方式为&lt;script&gt;&lt;/script&gt;</para>
+                </blockquote>
+                <para>不过，即使如此，还是没在上面那个网页的html源码中，看到有期望的：</para>
+                <programlisting>
+<![CDATA[
+<META http-equiv="Content-Script-Type" content="type">
+]]>
+                </programlisting>
+                <para>估计是该网页的javascript写的不够严谨吧。</para>
+            </listitem>
+            <listitem><emphasis>关于字符串的format函数</emphasis>
+                <para>参考这里：</para>
+                <para><link xl:href="http://witmax.cn/js-function-string-format.html" /></para>
+                <para>举例用法：</para>
+                <programlisting>
+<![CDATA[
+return "<a href=’{1}’ target=’_blank’ class=’ucard’ pid=’{0}’>{2}</a>".format(portraitId, cmturl, cmtname);
+]]>
+                </programlisting>
+                <para>其中，{0},{1}.{2}分别代表format后面的参数的第一个，第二个，第三个。</para>
+            </listitem>
+            <listitem><emphasis>打印或枚举出一个变量的所有属性property，或一个字典的所有键（key）和值（value）</emphasis>
+                <orderedlist>
+                    <listitem><emphasis>打印或枚举出一个变量（对象）的所有的属性property</emphasis>
+                        <para>参考这里：</para>
+                        <para><link xl:href="http://blog.csdn.net/sd2131512/article/details/6328300" /></para>
+                        <para>知道了，可以这样写：</para>
+                        <programlisting>
+for(var name in someObject){
+    document.write(name + "=" + someObject[name])
+}
+                        </programlisting>
+                        <para>此处someObject是某个对象变量，然后上面的for语句，加上"变量[属性]"的方式，可以获得所有的变量，并打印出来。</para>
+                    </listitem>
+                    <listitem><emphasis>打印或枚举出一个字典的所有键key和值value</emphasis>
+                        <para>参考这里：</para>
+                        <para><link xl:href="http://www.w3schools.com/JS/js_loop_for_in.asp" /></para>
+                        <para>后经过测试，下面代码在IE9里面可以运行：</para>
+                        <programlisting>
+var arrayData = { 
+    a : "11", 
+    b : "22", 
+    c : "33", 
+    d : "44" 
+}
+
+for (__key in arrayData)
+{
+    document.write( __key + "=" + arrayData[__key])
+}
+                        </programlisting>
+                        <para>其中上面的arrayData是一个字典，然后也是通过"字典[键]"的方式，获得对应键的值</para>
+                    </listitem>
+                </orderedlist>
+            </listitem>
+            <listitem><emphasis>如果某一行javascript脚本出错，则执行结果出错，但是却没有任何提示</emphasis>
+                <para>最新在折腾<link xl:href="http://www.crifan.com/record_add_support_include_html_static_page_into_google_xml_sitemap/">【记录】折腾给WordPress Google XML Sitemap中添加支持子目录自动扫描功能，包含HTML静态页面等可识别的格式</link>的过程中，发现一个现象：</para>
+                <para>html或php页面中，出现了非所预料的结果，知道是代码某处写错了，但是不值得是哪个文件的哪一行错了。</para>
+                <para>最后才无意间发现，原来是某个js脚本中，之前添加的多余的注释TODO字符串，没有及时删除，导致页面结果出错。</para>
+                <para>由于感慨，js代码执行结果异常，某行出错了，也没有任何的提示和警告，导致最终结果虽然错了，也知道是代码问题，但是却无法定位错误的位置。</para>
+                <para>如此去调试html，php，javascript混合的页面，真的很痛苦。</para>
+                <para>期待高手可以指教指教，有没有更加有效的调试方法。</para>
+            </listitem>
+            <listitem><emphasis>如果改动了javascript中的内容，一定要刷新页面，才可以看到最新改动的效果！！！</emphasis>
+                <para>最新在折腾<link xl:href="http://www.crifan.com/record_add_support_include_html_static_page_into_google_xml_sitemap/">【记录】折腾给WordPress Google XML Sitemap中添加支持子目录自动扫描功能，包含HTML静态页面等可识别的格式</link>的过程中，在修改对应的javascript文件sitemap.js，但是，始终却不见修改后的效果。</para>
+                <para>但是很奇怪的是，之前对于HTML页面等内容，修改了后，点击对应选项，是可以看到最新的改动的效果的。</para>
+                <para>而此处不论如何改动js文件，结果都不见效果。</para>
+                <para>最后，才发现，原来对于js文件，需要重新刷新HTMl页面，其会重新加载最新的js文件，然后才能看到最新的效果。</para>
+                <para>而之前不知道这一点，真的是浪费了非常非常多的时间。</para>
+            </listitem>
+        </orderedlist>
+        <para></para>
+    </sect2>
+        
+</sect1>

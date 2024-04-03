@@ -1,0 +1,240 @@
+<?xml version='1.0' encoding="utf-8"?>
+
+<!DOCTYPE sect1
+[
+
+<!ENTITY % crl_ent PUBLIC "crl.ent" 'http://www.crifan.com/files/res/docbook/entity/crl.ent'>
+%crl_ent;
+
+]>
+
+<sect1
+    xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xl="http://www.w3.org/1999/xlink"
+    
+    xml:id="lan.excel_vba">
+<title>Excel VBA</title>
+    <para>看此部分内容之前，关于VBA的基础知识，以及word VBA的相关知识，可参考<xref linkend="lan.word_vba" /></para>
+    
+    <sect2><title>Excel VBA中基本的名词和概念</title>
+        <para>此处介绍一些Excel中的最基本的概念，搞清楚这些概念，是继续深入学习Excel的基础。</para>
+        <para>Excel中，我们已经知道的是，从概念上来说，从大到小是：</para>
+        <para><emphasis>Excel文件 &rArr; Excel文件中页表sheet &rArr; sheet中的行和列 &rArr; 行列交叉点所对应的单元格</emphasis></para>
+        <para>这些名词和概念，对应到Excel VBA中就是：</para>
+        <para><emphasis>Workbook &rArr; Worksheet &rArr; Column, Row &rArr; Cell</emphasis></para>
+        <para>并且，每个概念，都对应着一个该单词的复数形式，表示的是对应的一组的该单位，</para>
+        <para>如：Workbooks表示一组，很多个当前已经打开的Excel文件等。</para>
+        <para>下面稍微详细地介绍一下各自的含义和用法。</para>
+        <orderedlist>
+            <listitem><emphasis>Workbook</emphasis>
+                <para>workbook属于workbooks，workbooks是当前打开的所有的workbook的集合（总称）。</para>
+                <para>对于想要获得单个的workbook，有这些方式：</para>
+                <itemizedlist>
+                    <listitem><programlisting>Workbooks.Item(N)</programlisting></listitem>
+                    <listitem><programlisting>Workbooks(N)</programlisting></listitem>
+                    <listitem><programlisting>Workbooks("excel_file_name.xlsx")</programlisting></listitem>
+                </itemizedlist>
+                <para>Workbook所具有的一些常见函数有：</para>
+                <itemizedlist>
+                    <listitem>Workbook.Open</listitem>
+                    <listitem>Workbook.Add</listitem>
+                    <listitem>Workbook.Save</listitem>
+                    <listitem>Workbook.SaveAs</listitem>
+                </itemizedlist>
+                <para>对于其更多的函数和属性，细心的人，自然会想到利用前面提到的自学方法，去更加详细的学习了解的。以后对此类提示，就不再多提醒了。</para>
+            </listitem>
+            <listitem><emphasis>Worksheet</emphasis>
+                <para>worksheet即我们常说的Excel中sheet。</para>
+                <para>worksheet属于worksheets。</para>
+                <para>Excel软件，创建一个Excel文件的时候，默认会自动创建3个sheet，对应的就是该workbook的worksheets，包含了3个worksheet。</para>
+                <para>对应获得当前的worksheet的方式：</para>
+                <itemizedlist>
+                    <listitem><programlisting>Workbooks.Item(1).Sheets.Item(N)</programlisting></listitem>
+                    <listitem><programlisting>Workbooks.Item(1).Sheets.Item("sheet_name")</programlisting></listitem>
+                </itemizedlist>
+            </listitem>
+            <listitem><emphasis>Column</emphasis>
+                <para>对应的概念很好理解，不多解释。</para>
+                <para>对应每个列，都有一个自己的名字，比如第三列，名字一般是"C"。</para>
+                <para>获得第三列的方式有：</para>
+                <itemizedlist>
+                    <listitem><programlisting>Columns(3)</programlisting></listitem>
+                    <listitem><programlisting>Columns("C")</programlisting></listitem>
+                </itemizedlist>
+                <para>获得3到5列，可以：</para>
+                <itemizedlist>
+                    <listitem><programlisting>Columns("C:E")</programlisting></listitem>
+                    <listitem><programlisting>Range("C:E")</programlisting></listitem>
+                </itemizedlist>
+                <para>选中1, 5，7，8，9列：</para>
+                <programlisting>Range("A:A, E:E, G:G, H:H,I:I").Select</programlisting>
+                <para>设置宽度：<programlisting>Columns("C").ColumnWidth = 4.5</programlisting></para>
+                <para>大小自动适应：<programlisting>Selection.Columns.AutoFit</programlisting></para>
+                <para>隐藏显示某列用对应的：<programlisting>Columns("C").hidden=True</programlisting></para>
+            </listitem>
+            <listitem><emphasis>Row</emphasis>
+                <para>行的操作，非常类似于列的操作：</para>
+                <para>选中2到6行：<programlisting>Rows("2:6").Select</programlisting></para>
+                <para>选中第一行：<programlisting>Rows(1).Select</programlisting></para>
+                <para>选中5，7，8行：<programlisting>Range("5:5, 7:7,8:8").Select</programlisting></para>
+                <para>设置行高：<programlisting>Rows(6).RowHeight = 2.5</programlisting></para>
+                <para>选中某6行，将其隐藏：
+                    <programlisting>
+Rows("6:6").Select
+Selection.EntireRow.Hidden = True
+                    </programlisting>
+                </para>
+                <tip><title>可以通过行Row或列Column的名称来操作行或列</title>
+                    <para>另外，如果单独对于某列，比如第三列,默认名字，是"C"，可以同选中该列，鼠标移动到左上角那个输入框中，鼠标会自动显示"Name Box"，此时你可以在里面输入你想要的名字，比如"Col3"，然后接下来的所有的对第三列的操作和引用，之前是通过Columns("C")来获得的，现在就可以通过</para>
+                    <programlisting>Columns("Col3")</programlisting>
+                    <para>来操作了。</para>
+                    <para>即Columns("XXX")中的XXX是对应的列的名字。</para>
+                    <para>对于行的操作，也是同样适用的。</para>
+                    <para>即可以先去对某行去命名，然后就可以通过对该名字来引用到该行了。</para>
+                </tip>
+            </listitem>
+            <listitem><emphasis>Cell</emphasis>
+                <para>行和列交叉点，对应的就是单元格cell。</para>
+                <para>下面是各种操作：</para>
+                <para>第四列第六行：<programlisting>Range("D6")</programlisting></para>
+                <para>设置单元格的一些属性：
+                    <programlisting>
+Range("B3″).Font.Name = "Cambria" ‘也可以设置为宋体，微软雅黑
+Range("B3″).Font.Bold = True
+                    </programlisting>
+                </para>
+                <para>选中从D2到H6的整块的单元格：<programlisting>Range("B2:H6")</programlisting></para>
+                <para>用同样的方式去选中某个单个的单元格：<programlisting>Range("D4:D4")</programlisting></para>
+                <para>选中两块单元格：<programlisting>Range("B2:C5,EC4:G8").Select</programlisting></para>
+                <para>选中部分重叠的两块单元格：<programlisting>Range("B2:C5, C4:G8").Select</programlisting></para>
+                <para>取消显示网格线：<programlisting>ActiveWindow.DisplayGridlines = False</programlisting></para>
+            </listitem>
+        </orderedlist>
+    </sect2>
+    
+    <sect2><title>Excel VBA中的一些基本操作</title>
+        <orderedlist>
+            <listitem><emphasis>如何添加注释</emphasis>
+                <para>VBA中的注释，是以单引号&quot;'&quot;开头的，其后内容，都视为注释内容。</para>
+                <para>另外一种，也可以通过关键字REM或Rem加上个空格，之后的内容，也会被识别为注释。</para>
+                <para>比如：</para>
+                <programlisting>
+REM this is a excel maro
+' this is a excel maro
+                </programlisting>
+            </listitem>
+            <listitem><emphasis>如何调试</emphasis>
+                <para>简单的说，有两种方式：</para>
+                <orderedlist>
+                    <listitem><emphasis>Msgbox</emphasis>
+                        <para>一是直接调用Msgbox去弹出对话框打印信息。</para>
+                        <para>比如: </para>
+                        <programlisting>MsgBox "Currently opening Excel file is: " &amp; ActiveWorkbook.Name</programlisting>
+                        <para>其中，字符串链接/拼接，用&amp;符号。</para>
+                    </listitem>
+                    <listitem><emphasis>log文件</emphasis>
+                        <para>二是新建一个log文件，将调试或打印信息输出到log文件中去。</para>
+                        <para>关于如何创建文件，可参考：<xref linkend="vba_create_log_file" /></para>
+                    </listitem>
+                </orderedlist>
+            </listitem>
+            <listitem><emphasis>获得当前的Excel文件所在路径</emphasis>
+                <para>类似于Word VBA中的ActiveDocument，Excel中是ActiveWorkbook</para>
+                <para>所以获得当前打开的Excel的文件路径是：</para>
+                <programlisting>ActiveWorkbook.Path</programlisting>
+                <para>与此相关的是：</para>
+                <programlisting>ActiveWorkbook.FullName = ActiveWorkbook.Path + '' + ActiveWorkbook.Name</programlisting>
+                <para>更多相关的内容，请自己尝试：</para>
+                <itemizedlist>
+                    <listitem><programlisting>MsgBox ActiveWorkbook.Name</programlisting></listitem>
+                    <listitem><programlisting>MsgBox ActiveWorkbook.FullName</programlisting></listitem>
+                    <listitem><programlisting>MsgBox ActiveWorkbook.FullNameURLEncoded</programlisting></listitem>
+                    <listitem><programlisting>MsgBox ActiveWorkbook.Path</programlisting></listitem>
+                </itemizedlist>
+            </listitem>
+            <listitem><emphasis>一些通用的属性和方法（函数）</emphasis>
+                <para>对于选中当前的内容，比如workbook，sheet等，可以通过.Select来选中，</para>
+                <para>比如：</para>
+                <programlisting>Sheets("sheet_name").Select</programlisting>
+                <para>对于当前的内容的名字，对应的是.Name属性，比如：</para>
+                <programlisting>Sheets("sheet_name").Name</programlisting>
+                <para>很多内容，都有move的功能，详细用法请自己探索。</para>
+                <para>新增一个新的内容，比如workbook，sheet等，都可以用Add方法。</para>
+            </listitem>
+        </orderedlist>
+    </sect2>
+    
+    <sect2><title>Excel VBA更多的学习资料</title>
+        <orderedlist>
+            <listitem><emphasis>VBA for Microsoft Office Excel 2007</emphasis>
+                <para>关于Excel VBA的一些基础知识，可以去看这里：</para>
+                <link xl:href="http://www.functionx.com/vbaexcel/">VBA for Microsoft Office Excel 2007</link>
+            </listitem>
+            <listitem><emphasis>Excel 2007 VBA参考大全</emphasis>
+                <para>关于Excel VBA，这本书介绍的很全：</para>
+                <link xl:href="http://www.verycd.com/topics/2872866/">《Excel 2007 VBA参考大全》扫描版 [PDF]</link>
+                <para>电驴地址：</para>
+                <link xl:href="ed2k://|file|%5BExcel.2007.VBA%E5%8F%82%E8%80%83%E5%A4%A7%E5%85%A8%5D.%EF%BC%88%E7%BE%8E%EF%BC%89%E6%A0%BC%E6%9E%97.%E6%89%AB%E6%8F%8F%E7%89%88.pdf|253406092|3cf57fc49d0fa875826ecc462cd9976c|h=eed6g2e25uuzc4c52obch2txlm7w65fx|/" />
+            </listitem>
+        </orderedlist>
+    </sect2>
+
+    <sect2><title>授人鱼不如授人以渔</title>
+        <para>此部分内容，其实在之前<xref linkend="lan.word_vba" />中，已有提到，此处再次强调一下。</para>
+        <para>在学习VBA（和任何类似知识）的过程中，学会利用系统已有资源。</para>
+        <para>即，在VBA中，可以供我们利用的资源，至少有这些：</para>
+        <orderedlist>
+            <listitem><emphasis>VBA中的对象浏览器（Object Browser）</emphasis>
+                <para>可以通过在写VBA代码的过程中，对于任何你不太懂，想要了解更多细节的内容，选中该内容，比如我想要了解workbook，那就选中workbook，然后右键&rArr;Object Browser,即可在Object Browser中查找到你所要的内容，其中可以直观快速地看到对应目标所具有的变量成员和函数等，很是方便。</para>
+            </listitem>
+            <listitem><emphasis>内置的Help</emphasis>
+                <para>选中想要查询的内容，然后按F1，VBA即可调用Help帮助系统，可以查询到更多的细节和实例用法。</para>
+                <para>例如，我知道了workbook是对应于当前Excel文件，想要了解workbook有哪些属性和方法，</para>
+                <para>那么可以去F1的Help中输入workbook，然后搜索到很多条目，其中第一条就是：</para>
+                <blockquote>
+                    <para><link xl:href="http://office.microsoft.com/client/helppreview.aspx?AssetId=HV805547869990&amp;lcid=1033&amp;NS=EXCEL%2EDEV&amp;Version=12&amp;respos=0&amp;CTT=1&amp;queryid=cc5dd30b%2D82da%2D4044%2Db28e%2D3ee83e8fcfe8">Workbook Object Members</link></para>
+                    <quote>Article Represents a Microsoft Excel workbook. Methods Name Description AcceptAllChanges Accepts all changes in the specified shared workbook. Activate Activates the fi...</quote>
+                </blockquote>
+                <para>然后点击进入后，就可以看到"Workbook Object Members"的页面，其中有三部分：Methods，Properties，Events</para>
+                <para>里面有你想要的所有的成员和函数等。</para>
+                <para>比如，表示当前Excel的文件名的.Name的属性，文件全名（包括路径和文件名）的.FullName的属性等。</para>
+                <para>然后你也可以通过Msgbox去自己尝试打印出来看看，都是什么值：</para>
+                <programlisting>
+MsgBox ActiveWorkbook.Name
+MsgBox ActiveWorkbook.FullName
+                </programlisting>
+                <para>这样的话，你就可以可以通过自学的方式，去搞懂很多内容了。</para>
+            </listitem>
+            <listitem><emphasis>通过录制宏去照葫芦画瓢</emphasis>
+                <para>如果还是不会操作，那么可以去通过VBA提供的录制宏的功能，来实现搞懂VBA系统是如何将你对应的操作转化为对应的VBA代码的，然后你就可以照葫芦画瓢了。</para>
+                <para>比如，我打开两个Excel文件，将其中一个Excel中的某个单元格的内容，选中后复制，然后切换到另外一个Excel文件，选中某个单元格，按了Ctrl+V粘贴，然后按了Ctrl+S来保存，如此这段操作，通过录制宏，得到如下代码：</para>
+                <programlisting>
+Sub Macro3()
+‘
+‘ Macro3 Macro
+'
+    Range("B3″).Select
+    Selection.Copy
+    Windows("EWR_tracking_list_enabledMacro.xlsm").Activate
+    Range("O152″).Select
+    ActiveSheet.Paste
+    Application.CutCopyMode = False
+    ActiveWorkbook.Save
+    Windows("ROSH1.xlsx").Activate 
+End Sub
+                </programlisting>
+                <para>所以，如果你想要实现类似的操作，至少是复制粘贴等动作，就可以参考上述代码了。</para>
+                <tip><title>Excel中如何录制宏</title>
+                    <para>View&rArr;Macro&rArr;Record Macro，跳出对话框让你输入要录制的话宏的名称，随便起个名字，然后你就可以去随心所欲地操作了，</para>
+                    <para>操作完成后，再去View&rArr;Macro&rArr;Stop Macro，即可。</para>
+                    <para>此时，再去View&rArr;Macro&rArr;View Macro去查看你刚录制的宏，即可看到对应的VBA代码。</para>
+                </tip>
+            </listitem>
+        </orderedlist>
+        <para>通过上述方法，基本上大部分内容，都可以自己自学而搞懂。</para>
+        <para>有人会问，那么我最开始使用VBA的话，连一些基本概念和其他一些常见操作都不会，连对应的关键字都不知道，那么又如何去查询对应关键字呢？</para>
+        <para>答案是，学会利用baidu和google，可以查询你要实现的操作，往往都会找到相关内容的，即使没有找到直接的答案，但是也可以找到对应的相关的关键字，然后就可以通过上述Object Browser和F1的Help，找到更多的细节的用法，如果足够细心和能够举一反三，相信很多的内容，都可以自己发掘并实现的。</para>
+        <para>如果还是没搞懂，普通的操作，也是可以通过录制宏的方式，然后去实际操作，最后查看所录制的宏的代码中，是如何操作的，你就可以照葫芦画瓢了。</para>
+    </sect2>
+</sect1>

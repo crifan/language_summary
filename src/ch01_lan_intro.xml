@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding="utf-8"?>
+
+<!DOCTYPE chapter
+[
+
+<!ENTITY % crl_ent PUBLIC "crl.ent" 'http://www.crifan.com/files/res/docbook/entity/crl.ent'>
+%crl_ent;
+
+]>
+
+<chapter
+    xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xl="http://www.w3.org/1999/xlink"
+    
+    xml:id="ch01_lan_intro"
+>
+<title>各种计算机语言简介</title>
+<abstract></abstract>
+
+    <sect1><title>各种计算机语言简介</title>
+        <para></para>
+    </sect1>
+    
+    
+    
+</chapter>

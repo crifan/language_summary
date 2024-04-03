@@ -1,0 +1,438 @@
+<?xml version='1.0' encoding="utf-8"?>
+
+<!DOCTYPE sect1
+[
+
+<!ENTITY % crl_ent PUBLIC "crl.ent" 'http://www.crifan.com/files/res/docbook/entity/crl.ent'>
+%crl_ent;
+
+]>
+
+<sect1
+    xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xl="http://www.w3.org/1999/xlink"
+    
+    xml:id="lan.word_vba">
+<title>Word VBA</title>
+
+    <sect2><title>什么是word vba？为何要用VBA？</title>
+        <para>VBA是Visual Basic For Application的简称。</para>
+        <para>换句话说，就是将VB应用于Application应用程序，此处的Application指的是微软的Excel，word等应用程序。</para>
+        <para>所以，对于我用到的，在word里面写宏，去实现一些操作，用到的VB，就是Word VBA了。</para>
+        <para>而其他常用的，还有Excel里面也会用到用宏去实现一些根据自己需求实现的一些功能，比如自动提取一些内容到一个文档中，否则，自己手动慢慢地复制粘贴，往往效率极低，累死你不说，还不容易保证完全正确，而通过宏来处理，运行一下宏，点击一下某个菜单等，即可实现要做的事情，高效，准确。</para>
+        <para>就像别人说的，除了"Excel本身的内置函数其实已经很强大了"，但是只是很强大，有些更高级或复杂的操作，还是宏实现起来更方便和快捷。</para>
+        <para>再简而言之，如果你不是需要对某（些）文档特殊处理，只是一般的使用word或excel文档，多数人都是用不到的。</para>
+        <para>而如果有类似于我这样的需求，将某个word文档中的很多表格中的符合某些特定条件的某些列的内容，经过一定条件判断，将对应的值提取到一个xml文档中，并且输出的时候，要将该值根据某些约定，再分成几个部分等等，这类的操作，手动实现，要一个个去找对应的表格，然后找到对应的值，然后手动复制，粘贴，一点点做，效率很低，而如果可以用宏实现，只需要写好宏代码，运行一下，即可省去大量的精力。</para>
+        <para>不过，就像<xref linkend="ref.vba_basic_intro" />说的："VBA功能很强大，但并不是万能的，也并不是所有工作都需要用VBA来解决，也并不是所有工作用VBA来解决都会很简单，这要根据实际情况而定，有些工作你用VBA来解决的话相反会变得很麻烦。"</para>
+    </sect2>
+    
+    <sect2><title>Word VBA的一些基本概念</title>
+        <para>此处介绍一下，Word VBA中的一些基本单位（名词）：story, section, paragrah, line, character,table,cell,row, column</para>
+        <para>对于所选一段文字后，即引用Selection，其中会包含很多属性，Selection.XXX 其中XXX就有下面列出来的很多种，现在简单说说我对这些属性含义的理解：</para>
+        <orderedlist>
+            <listitem><emphasis>Story</emphasis>
+                <para>中文直译为 故事，经过测试，感觉对于word文档来说，好像就是整个文档的内容。</para>
+            </listitem>
+            <listitem><emphasis>Text</emphasis>
+                <para>不必多解释，就是所选的内容</para>
+            </listitem>
+            <listitem><emphasis>Sections</emphasis>
+                <para>节。经测试，好像整个word文档，就一个节，有点像story，具体两者的区别，暂未搞懂。</para>
+            </listitem>
+            <listitem><emphasis>Paragraphs</emphasis>
+                <para>段落。按照中文的段落的含义理解，怎么说也应该有个几十行之类的文字，才算一个段落的，这是之前学语文的时候的感觉。结果发现这里的段落和中文意思的段落，差别很大，一个文档里面，没多少行字，结果段落就几百个了，貌似是一个单词，一个换行，一个表格中的值，都算一个段落。</para>
+            </listitem>
+            <listitem><emphasis>Sentences</emphasis>
+                <para>句子，同常理，不多解释。</para>
+            </listitem>
+            <listitem><emphasis>Words</emphasis>
+                <para>单词，同常理，不多解释。</para>
+            </listitem>
+            <listitem><emphasis>Characters</emphasis>
+                <para>字符，同常理，不多解释。</para>
+            </listitem>
+            <listitem><emphasis>Tables，Cells，Rows，Columns</emphasis>
+                <para>表格，同常理。其中包含了很多个cell，即单元格。每个cell，都对应不同的行和列。</para>
+                <para>（打印）输出所选Range中（其包含很多个表格）中的第二个表格中的第三行第四列的值，表示为：</para>
+                <programlisting>Print Selection.Tables(2).Cell(3, 4)</programlisting>
+                <note>
+                    <para>其中第三行第四列，不是Cell(2,3)，因为其单元格的下表是从1开始，而不是原以为的类似于C语言或者Excel中的0为起始值的。</para>
+                </note>
+            </listitem>
+            <listitem><emphasis>End ，Start</emphasis>
+                <para>即Selection.Start和Selection.End ，都是直接赋值的</para>
+                <para>所以，如果你想要选中某段内容（文字），那么只要找到你所要的起点和终点，然后将其值赋值给Selection.Start和Selection.End，即可选中该段内容（文字）。</para>
+                <para>当然，也可以利用两者算出所选内容的长度：</para>
+                <programlisting>slection_len  = Selection.End - Selection.Start</programlisting>
+            </listitem>
+            <listitem><emphasis></emphasis>
+                <para></para>
+            </listitem>
+        </orderedlist>
+    </sect2>
+    
+    <sect2><title>Word vba学习记录</title>
+        <orderedlist>
+            <listitem><emphasis>获得所选range的文字</emphasis>
+                <para>尝试了一下，发现两种都可以：</para>
+                <programlisting>
+Selection.Text
+Selection.Range.Text
+                </programlisting>
+            </listitem>
+            <listitem><emphasis>不等于符号</emphasis>
+                <para>VBA里面的不等于号，用&quot;&lt;&gt;&quot;表示，而不是其他C等语言里面的&quot;!=&quot;</para>
+                <para>&lt;&gt;，即大于号和小于号的组合，意思也很明确，既不大于也不小于，所以就是不等于了。</para>
+            </listitem>                <listitem><emphasis>如何选中一行并获得对应的文字 和 wdMove和wdExtend的区别</emphasis>
+                <para>前提，光标（或叫插入点）已经移动到该行了，但是想要选中该行，并想要获得对应所选Range的文字</para>
+                <para>此时可以用如下代码：</para>
+                <programlistingco>
+                    <programlisting>
+Selection.MoveDown Unit:=wdLine<co id="co.wdline" linkends="co.note.wdline" />, Count:=1, Extend:=wdExtend<co id="co.wdextend" linkends="co.note.wdextend" />
+                    </programlisting>
+                    <calloutlist>
+                        <callout id="co.note.wdline" arearefs="co.wdline" >
+                            <para>wdLine是单位（Unit）</para>
+                            <para>类似的Unit还有：wdParagraph，wdWindow，wdScreen。</para>
+                        </callout>
+                        <callout id="co.note.wdextend" arearefs="co.wdextend" >
+                            <para>和WdExtend对应的还有wdMode</para>
+                            <para>对此，VBA教程的解释是：<quote>如果是 wdMove，则所选内容折叠到结束位置，并向下移动。如果是 wdExtend，则所选内容向下扩展。默认值为 wdMove。</quote></para>
+                            <para>没完全理解，但是经过测试得知，如果是mdMove，那就是光标移动到对应位置了，但是没有选择这（光标移动的）起点到终点，此处为整个这一行，的内容，如果是wdExtend，那就是不仅移动光标了，并且同时选中了起点到终点的内容。</para>
+                        </callout>
+                    </calloutlist>
+                </programlistingco>
+            </listitem>
+            <listitem><emphasis>如何跳转到某一标题 和 如何移动光标/插入点</emphasis>
+                <programlistingco>
+                    <programlisting>
+Selection.GoTo<co id="co.goto" linkends="co.note.goto" /> What:=wdGoToHeading<co id="co.wdgotoheading" linkends="co.note.wdgotoheading" />, Which:=wdGoToAbsolute<co id="co.wdgotoabsolute" linkends="co.note.wdgotoabsolute" />, Count:=5
+                    </programlisting>
+                    <calloutlist>
+                        <callout id="co.note.goto" arearefs="co.goto" >
+                            <para>这里主要是利用Goto语句</para>
+                        </callout>
+                        <callout id="co.note.wdgotoheading" arearefs="co.wdgotoheading" >
+                            <para>wdGoToHeading说明掉转的单位是heading标题</para>
+                        </callout>
+                        <callout id="co.note.wdgotoabsolute" arearefs="co.wdgotoabsolute" >
+                            <para>wdGoToAbsolute表示是绝对位置的跳转</para>
+                            <para>于此相对应的还有wdGoToFirst, wdGoToLast, wdGoToNext, wdGoToPrevious, wdGoToRelative。</para>
+                            <para>更多详细内容，请参考<xref linkend="ref.ms_word_vba" /></para>
+                        </callout>
+                    </calloutlist>
+                </programlistingco>
+                <para>另外，对于移动光标/插入点，可以借鉴如下做法：</para>
+                <blockquote>
+                    <para>本示例将所选内容移至当前文字部分的开头。如果所选内容位于文档正文部分，则本示例将所选内容移至文档的开头</para>
+                    <programlistingco>
+                        <programlisting>
+Selection.HomeKey Unit:=wdStory<co id="co.wdstory" linkends="co.note.wdstory" />, Extend:=wdMove
+                        </programlisting>
+                        <calloutlist>
+                            <callout id="co.note.wdstory" arearefs="co.wdstory" >
+                                <para>wdStory属于wdUnits</para>
+                                <para>其他类似的还有wdColumn，wdLine，wdRow等</para>
+                            </callout>
+                        </calloutlist>
+                    </programlistingco>
+                </blockquote>
+            </listitem>
+            <listitem><emphasis>如何获得选中的标题的序号</emphasis>
+                <para>前提，已经选择某一标题了，想要获得该标题前面的序号</para>
+                <para>比如对这个标题：</para>
+                <para>2.1     PAPRBY / RubyVerifoneDefaults</para>
+                <para>想要获得标题的序号，即2.1</para>
+                <para>可通过下列代码获得当前标题的序号，即2.1</para>
+                <programlistingco>
+                    <programlisting>
+Selection.Bookmarks("\headinglevel<co id="co.headinglevel" linkends="co.note.headinglevel" />").Range.ListFormat.ListString
+                    </programlisting>
+                    <calloutlist>
+                        <callout id="co.note.headinglevel" arearefs="co.headinglevel" >
+                            <para>\headinglevel是VBA里面的预定义标签</para>
+                            <para>关于此内容的详细解释，请参考：<xref linkend="ref.vba_get_heading_number" /></para>
+                        </callout>
+                    </calloutlist>
+                </programlistingco>
+            </listitem>
+            <listitem><emphasis>如何返回函数的返回值</emphasis>
+                <para>关于这点，网上找，没几个说的很清楚的，最后还是通过VBA的Help才搞懂如何返回函数返回值的。</para>
+                <para>此处，简单解释如下：</para>
+                <para>一个Function函数的语法为：</para>
+                <programlistingco>
+                    <programlisting>
+[Public | Private | Friend] [Static] Function <emphasis>name</emphasis><co id="co.name" linkends="co.note.name" /> [(arglist)] [As type]
+[statements]
+[name = expression<co id="co.expression" linkends="co.note.expression" />]
+[Exit Function] 
+[statements]
+<emphasis>[name = expression]</emphasis><co id="co.name_expr" linkends="co.note.name_expr" />
+End Function
+                    </programlisting>
+                    <calloutlist>
+                        <callout id="co.note.name" arearefs="co.name" >
+                            <para>name即为函数名</para>
+                        </callout>
+                        <callout id="co.note.expression" arearefs="co.expression" >
+                            <para>expression是表达式，当然也可以是某个变量，常量等，其就代表了返回值。</para>
+                            <para>更具体的解释和例子，摘录如下，很容易看懂的：</para>
+                            <blockquote>
+                                <para>要从函数返回一个值，只需将该值赋给函数名。在过程的任意位置都可以出现这种赋值。</para>
+                                <para>如果没有对 name 赋值，则过程将返回一个缺省值：数值函数返回 0，字符串函数返回一个零长度字符串 ("")，Variant 函数则返回 Empty。</para>
+                                <para>如果在返回对象引用的 Function 过程中没有将对象引用赋给 name （通过 Set），则函数返回 Nothing。</para>
+                                <para>下面的示例说明如何给一个名为 BinarySearch 的函数赋返回值。</para>
+                                <para>在这个示例中，将 False 赋给了该函数名，表示没有找到某个值。</para>
+                                <programlisting>
+Function BinarySearch(......) As Boolean
+......
+    '值未找到，返回一个 False 值。
+    If lower > upper Then
+        BinarySearch = False
+        Exit Function
+    End If
+......
+End Function
+                                </programlisting>
+                                <para></para>
+                            </blockquote>
+                            <para>看懂后，多说一句，有问题，还是先找VBA的Help系统，比百度，google等，有时候更准确，方便，易懂。</para>
+                        </callout>
+                        <callout id="co.note.name_expr" arearefs="co.name_expr" >
+                            <para>函数内部任何地方都可以出现[name = expression]</para>
+                        </callout>
+                    </calloutlist>
+                </programlistingco>
+            </listitem>
+            <listitem><emphasis>字符串处理函数</emphasis>
+                <para>关于VBA中的字符串相关的函数，刚发现，office 2010 中的 VBA的help文件里面，有已经总结好的了：</para>
+                <informaltable>
+                    <tgroup cols="2" >
+                        <colspec colnum="1" colname="col1" colwidth="1*" />
+                        <colspec colnum="2" colname="col2" colwidth="1*" />
+                        
+                        <thead align="center" >
+                            <row><entry>作用</entry><entry>关键字</entry></row>
+                        </thead>
+                        
+                        <tbody>
+                            <row><entry>比较两个字符串</entry><entry>StrComp</entry></row>
+                            <row><entry>变换字符串</entry><entry>StrConv</entry></row>
+                            <row><entry>大小写变换</entry><entry>Format, LCase, UCase</entry></row>
+                            <row><entry>建立重复字符的字符串</entry><entry>Space, String</entry></row>
+                            <row><entry>计算字符串长度</entry><entry>Len</entry></row>
+                            <row><entry>设置字符串格式</entry><entry>Format</entry></row>
+                            <row><entry>重排字符串</entry><entry>LSet, RSet</entry></row>
+                            <row><entry>处理字符串</entry><entry>InStr, Left, LTrim, Mid, Right, RTrim, Trim</entry></row>
+                            <row><entry>设置字符串比较规则</entry><entry>Option Compare</entry></row>
+                            <row><entry>运用 ASCII 与 ANSI 值</entry><entry>Asc, Chr</entry></row>
+                        </tbody>
+                    </tgroup>
+                </informaltable>
+                <para>上述字符串处理相关的函数，多数都是见名知意，容易看懂和使用， 但是也有些不太容易搞懂，或者和普通C语言等里面的字符串处理函数不同的，需要额外说明的，解释如下：</para>
+                <orderedlist>
+                    <listitem><emphasis>Space, String</emphasis>
+                        <para>其中Space很方便，比如想要输出10个空格，当然你可以通过自己手动的写成&quot;          &quot;，但是有了space，用其更方便，直接写成</para>
+                        <screen>Space(10)</screen>
+                        <para>即代表了10个空格。同理</para>
+                        <screen>String(number,characterToRepeate)</screen>
+                        <para>用于输出多个某一字符，而对于前面的空格来说，也可以用string表示，即</para>
+                        <screen>Space(10)=String(10, 32)</screen>
+                        <para>其中32=0x20，是space的ASCII值。而String的优点在于，也可以输出其他字符，包括0x0~0x1F之类不可见字符。</para>
+                    </listitem>
+                    <listitem><emphasis>InStr, InStrRev</emphasis>
+                        <para>这个InStr，其实就是C语言的strstr</para>
+                        <para>语法为：</para>
+                        <screen>InStr([start, ]string1, string2[, compare])</screen>
+                        <para>意思为：&quot;返回 Variant (Long)，指定一字符串在另一字符串中最先出现的位置。&quot;</para>
+                        <para>而InStrRev意思和InStr类似，只不过是"从字符串的末尾算起"。</para>
+                        <para>举例说明：</para>
+                        <programlisting>posOfPoint = InStr("abc.def", ".") ’ 查找"abc.def"中的".",返回值为4</programlisting>
+                    </listitem>
+                    <listitem><emphasis>Asc, Chr</emphasis>
+                        <para>Asc是将字符转换为ASCII数值，Chr是将数值转换为ASCII字符。</para>
+                        <para>举例为：</para>
+                        <programlisting>
+MyNumber = Asc("A")    ' 返回 65。
+MyChar = Chr(97)    ' 返回 a。
+                        </programlisting>
+                    </listitem>
+                    <listitem><emphasis>如何创建文件和输出信息到文件里面</emphasis>
+                        <formalpara xml:id="vba_create_log_file"><title>在VBA中创建（log）文件的两种方法</title>
+                            <orderedlist>
+                                <listitem>方法1：
+                                    <programlisting>
+Function createFileTest()
+' the name of the file to be output, including full path
+Dim FileName As String
+FileName = "D:\create_file.txt"
+' open the file ouput text stream output, overwritng is necessary
+Dim fs As Object
+Set fs = CreateObject("Scripting.FileSystemObject")
+Dim file As Object
+Set file = fs.CreateTextFile(FileName, True)
+file.WriteLine "test string..."
+file.Close
+End Function
+                                    </programlisting>
+                                </listitem>
+                                <listitem>方法2：
+                                    <programlisting>
+Public gFileNum As Integer
+Function createOutputFile()
+Dim outputFileNameWithPath As String
+Dim gDestFile As String
+Dim outputFileNameWithPath As String
+Dim openFileOK As Boolean
+openFileOK = True
+' 1. create an XML file
+outputFileNameWithPath = "D:\test_output.txt"
+gDestFile = outputFileNameWithPath
+' Obtain next free file handle number.
+gFileNum = FreeFile()
+' Turn error checking off.
+On Error Resume Next
+' Attempt to open destination file for output.
+Open gDestFile For Output As #gFileNum
+' If an error occurs report it and end.
+If Err &lt;&gt; 0 Then
+    openFileOK = False
+    MsgBox "Cannot create file: " &amp; gDestFile
+End If
+' Turn error checking on.
+On Error GoTo 0
+createOutputFile = openFileOK
+End Function
+Sub createFileTest()
+Print #gFileNum, "Test output string to this file..."
+Print #gFileNum, "Test done."
+Close #gFileNum
+End Sub
+                                    </programlisting>
+                                </listitem>
+                            </orderedlist>
+                        </formalpara>
+                    </listitem>
+                    <listitem><emphasis>如何获得当前文件的文件名 和 当前文件所在路径</emphasis>
+                        <orderedlist>
+                            <listitem>获得当前文件所在的路径：ActiveDocument.Path。<para>注意：所得结果，最后没有那个路径分隔符"\"</para></listitem>
+                            <listitem>获得当前文件的文件名：ActiveDocument.Name</listitem>
+                            <listitem>获得当前文件的路径和文件名，即全名：ActiveDocument.FullName</listitem>
+                        </orderedlist>
+                    </listitem>
+                    <listitem><emphasis>VB里面的一些常量</emphasis>
+                        <para>office 2010的help文件里面已有总结：</para>
+                        <blockquote>
+                            <emphasis>Visual Basic 常数</emphasis>
+                            <para>Visual Basic for Applications 定义了一些常数，使程序设计变得更为简单。下列常数可在程序代码中的任何地方代替实际值：</para>
+                            <itemizedlist>
+                                <listitem>Calendar 常数</listitem>
+                                <listitem>CallType 常数</listitem>
+                                <listitem>Color 常数</listitem>
+                                <listitem> Compiler 常数</listitem>
+                                <listitem>Date 常数</listitem>
+                                <listitem>Dir、GetAttr 和 SetAttr 常数</listitem>
+                                <listitem>IMEStatus 常数</listitem>
+                                <listitem>Instr、StrComp 常数</listitem>
+                                <listitem>Keycode 常数</listitem>
+                                <listitem>Miscellaneous 常数</listitem>
+                                <listitem>MsgBox 常数</listitem>
+                                <listitem>QueryClose 常数</listitem>
+                                <listitem>QueryClose 常数</listitem>
+                                <listitem>Shell 常数</listitem>
+                                <listitem>StrConv 常数</listitem>
+                                <listitem>系统颜色常数</listitem>
+                                <listitem>VarType 常数</listitem>
+                                <listitem>Visual Basic 常数</listitem>
+                            </itemizedlist>
+                        </blockquote>
+                        <para>其中，此处打算把一些我所常用到的一些常数列出来，以供参考</para>
+                        <blockquote>
+                            <emphasis>Miscellaneous 常数</emphasis>
+                            <para>下列常数由 Visual Basic for Applications 中的类型库定义，可用来在代码中的任何地方代替实际值</para>
+                            <informaltable>
+                                <tgroup cols="3" >
+                                    <colspec colnum="1" colname="col1" colwidth="1*" />
+                                    <colspec colnum="2" colname="col2" colwidth="1*" />
+                                    <colspec colnum="3" colname="col3" colwidth="2*" />
+                                    
+                                    <thead align="center" >
+                                        <row><entry>常数</entry><entry>等于</entry><entry>描述</entry></row>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        <row><entry>vbCrLf</entry><entry>Chr(13) + Chr(10)</entry><entry>回车符与换行符结合</entry></row>
+                                        <row><entry>vbCr</entry><entry>Chr(13)</entry><entry>回车符</entry></row>
+                                        <row><entry>vbLf</entry><entry>Chr(10)</entry><entry>换行符</entry></row>
+                                        <row><entry>vbNewLine</entry><entry>Chr(13) + Chr(10) or, on the Macintosh, Chr(13)</entry><entry>平台指定的新行字符；适用于当前平台</entry></row>
+                                        <row><entry>vbNullChar</entry><entry>Chr(0)</entry><entry>值为 0 的字符</entry></row>
+                                        <row><entry>vbNullString</entry><entry>值为 0 的字符串</entry><entry>用来调用外部过程；与长度为零的字符串 ("") 不同</entry></row>
+                                        <row><entry>vbObjectError</entry><entry>-2147221504</entry><entry>用户定义的错误号应当大于该值，例如：Err.Raise Number = vbObjectError + 1000</entry></row>
+                                        <row><entry>vbTab</entry><entry>Chr(9)</entry><entry>Tab 字。</entry></row>
+                                        <row><entry>vbBack</entry><entry>Chr(8)</entry><entry>退格字符</entry></row>
+                                        <row><entry>vbFormFeed</entry><entry>Chr(12)</entry><entry>在 Microsoft Windows or on the Macintosh 中没有作用</entry></row>
+                                        <row><entry>vbVerticalTab</entry><entry>Chr(11)</entry><entry>在 Microsoft or on the Macintosh Windows 中没有作用</entry></row>
+                                    </tbody>
+                                </tgroup>
+                            </informaltable>
+                        </blockquote>
+                    </listitem>
+                </orderedlist>
+            </listitem>
+        </orderedlist>
+    </sect2>
+    
+    <sect2><title>授人鱼不如授人以渔</title>
+        <para>下面介绍一些更多有用的参考资料，以及介绍一下遇到问题如何去解决问题。</para>
+        <orderedlist>
+            <listitem><emphasis>通过VBA内置的Help系统查询不懂的内容</emphasis>
+                <para>在word里面打开VBA编辑器编辑vba代码后，对于常见的一些对象，属性，方法（函数）等的具体解释，多数都可以通过<emphasis>选择该对象/属性/方法</emphasis>，然后按<emphasis>F1键</emphasis>，<emphasis>打开帮助</emphasis>，其会自动跳转到对应的帮助内容，很是方便，而且很多的细节，解释的也比较详细，可以多多利用。</para>
+                <para>其中都包括了一些基本知识的详细解释，比如上面提到的，关于VBA中关于Function的返回值，其要去查看Help文件，就可以通过选择某函数，</para>
+                <para>比如，选中：</para>
+                <programlisting>
+Function funcName()
+'XXXXXX
+End Function
+                </programlisting>
+                <para>中的Function，然后按F1键，系统自动会跳转到Help文件中关于Function的解释，很方便。</para>
+            </listitem>
+            <listitem><emphasis>常见函数分类列表</emphasis>
+                <para>office 2010中VBA的help文件做的很好，里面总结了一些常见的函数，前面列出来的，就是那个字符串处理相关的函数。</para>
+                <para>下面列出了，其他一些类别，先放到这里，以备后查：</para>
+                <informaltable>
+                    <tgroup cols="2" >
+                        <colspec colnum="1" colname="col1" colwidth="1*" />
+                        <colspec colnum="2" colname="col2" colwidth="1*" />
+                        
+                        <thead align="center" >
+                            <row><entry>分类</entry><entry>描述</entry></row>
+                        </thead>
+                        
+                        <tbody>
+                            <row><entry>数组</entry><entry>建立、定义与使用数组</entry></row>
+                            <row><entry>编译命令</entry><entry>控制编译方式</entry></row>
+                            <row><entry>控制流</entry><entry>循环及过程流程控制</entry></row>
+                            <row><entry>变换</entry><entry>变换数值及数据类型</entry></row>
+                            <row><entry>数据类型</entry><entry>数据类型与 variant 子型态</entry></row>
+                            <row><entry>日期与时间</entry><entry>变换、使用日期与时间表达式</entry></row>
+                            <row><entry>目录和文件</entry><entry>控制文件系统与处理文件</entry></row>
+                            <row><entry>错误</entry><entry>侦测与返回错误值</entry></row>
+                            <row><entry>金融</entry><entry>进行各种金融运算</entry></row>
+                            <row><entry>输入与输出</entry><entry>接受输入与显示、打印输出</entry></row>
+                            <row><entry>数学</entry><entry>完成各种数学运算</entry></row>
+                            <row><entry>其他</entry><entry>激活其他应用程序与处理事件</entry></row>
+                            <row><entry>操作符</entry><entry>比较表达式与完成其它操作</entry></row>
+                            <row><entry>字符串处理</entry><entry>处理字符串及字符串数据类型</entry></row>
+                            <row><entry>变量与常数</entry><entry>声明、定义变量与常数</entry></row>
+                        </tbody>
+                    </tgroup>
+                </informaltable>
+            </listitem>
+            <listitem><emphasis>网上在线查找相关帮助内容</emphasis>
+                <para>刚找到的，微软的官方的在线帮助：</para>
+                <para><link xl:href="http://office.microsoft.com/zh-cn/access-help/CH010072891.aspx?CTT=97" /></para>
+            </listitem>
+        </orderedlist>
+    </sect2>
+</sect1>

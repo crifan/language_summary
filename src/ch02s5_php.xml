@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding="utf-8"?>
+
+<!DOCTYPE sect1
+[
+
+<!ENTITY % crl_ent PUBLIC "crl.ent" 'http://www.crifan.com/files/res/docbook/entity/crl.ent'>
+%crl_ent;
+
+]>
+
+<sect1
+    xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xl="http://www.w3.org/1999/xlink"
+    
+    xml:id="lan.php">
+<title>PHP</title>
+
+    <sect2><title>PHP学习记录</title>
+        <orderedlist>
+            <listitem><emphasis></emphasis>
+                <para></para>
+                <para></para>
+                <para></para>
+            </listitem>
+            <listitem><emphasis></emphasis>
+                <para></para>
+                <para></para>
+                <para></para>
+            </listitem>
+        </orderedlist>
+        <para></para>
+    </sect2>
+
+    <sect2 xml:id="lan.php.crifanlib"><title>crifan的PHP库</title>
+        <para>暂时还没有合并所有的php相关的函数到crifanLib.php中，此处只是整理出目前已有的一些有用的函数而已。</para>
+        <para></para>
+        <sect3><title>与字符串等有关的函数</title>
+            <sect4><title>添加末尾的斜杠:addTailSlash</title>
+                <programlisting language="php">
+//add the tail slash if not exist
+//eg: from files/doc/docbook to files/doc/docbook/
+function addTailSlash($str)
+{
+    if(substr($str, -1) != "/")
+    {
+        $str = $str."/";
+    }
+    return $str;
+}
+                </programlisting>
+                <example><title>addTailSlash使用范例</title>
+                    <programlisting language="php">
+//add tail slash
+$homePath = $this->addTailSlash($homePath);
+//echo "homePath=".$homePath."&lt;br /&gt;";
+                    </programlisting>
+                </example>
+            </sect4>
+            
+            <sect4><title>去除开始的斜杠:removeFirstSlash</title>
+                <programlisting language="php">
+//remove the first slash if exist
+//eg: from /files/doc/docbook to files/doc/docbook
+function removeFirstSlash($str)
+{
+    if(substr($str, 0, 1) == "/")
+    {
+        $str = substr($str, 1);
+    }
+    return $str;
+}
+                </programlisting>
+            </sect4>
+            <sect4><title>检查一个字符串是否在另一个数组中:strExistInArr</title>
+                <programlisting language="php">
+//eg: check txt is in array("txt", "html", "pdf")
+function strExistInArr($str, $arr)
+{
+    if($arr[0] == "*")
+    {
+        $found = True;
+    }
+    else
+    {
+        $found = False;
+        $arrLen = count($arr);
+        for($i=0; $i&lt;$arrLen; $i++)
+        {
+            //if(0 == strcmp($str, $arr[$i]))
+            if($str == $arr[$i])
+            {
+                $found = True;
+                break;
+            }
+        }
+    }
+
+    return $found;
+}
+                </programlisting>
+                <example><title>strExistInArr使用范例</title>
+                    <programlisting language="php">
+$fileValid = $this->strExistInArr($fileSuf, $validSuf);
+                    </programlisting>
+                </example>
+            </sect4>
+            <sect4><title>从文件过滤类型生成文件后缀列表:genValidSuffix</title>
+                <programlisting language="php">
+<![CDATA[
+//eg: from "*.html;*.txt;" to array("html", "txt")
+function genValidSuffix($fileType)
+{
+    $validSuf = array();
+    
+    $splitedArr = explode(";", $fileType);
+    $arrSize = count($splitedArr);
+    //echo "splited arrary size=".$arrSize."<br />";
+    for($i=0; $i<$arrSize; $i++)
+    {
+        $singleSufDef = $splitedArr[$i];
+        //echo "singleSufDef=".$singleSufDef."<br />";
+        if($singleSufDef && ($singleSufDef != ""))
+        {
+            //echo "singleSufDef not null <br />";
+            $suffix = str_replace("*.", "", $singleSufDef);
+            //echo "suffix=".$suffix."<br />";
+            if($suffix == "*")
+            {
+                //echo "found & suffix <br />";
+                $validSuf = array("*");
+                break;
+            }
+            else
+            {
+                //echo "add $suffix into array <br />";
+                array_push($validSuf, $suffix);
+            }
+        }
+    }
+
+    return $validSuf;
+}
+]]>
+                </programlisting>
+                <example><title>genValidSuffix使用范例</title>
+                    <programlisting language="php">
+//$validSuf = array("html", "htm", "txt", "pdf");
+$validSuf = $this->genValidSuffix($fileType);
+                    </programlisting>
+                </example>
+            </sect4>
+        </sect3>
+        <sect3><title>与文件等有关的函数</title>
+            <sect4><title>获得文件名的后缀:getFileSuffix</title>
+                <programlisting language="php">
+//eg: from abc.txt got txt
+function getFileSuffix($fileName)
+{
+    $gotInfo = pathinfo($fileName);
+    // dirname, basename, extension
+    $suffix = strtolower($gotInfo["extension"]);
+    return $suffix;
+}
+                </programlisting>
+                <example><title>getFileSuffix使用范例</title>
+                    <programlisting language="php">
+$fileSuf = $this->getFileSuffix($filename);
+                    </programlisting>
+                </example>
+            </sect4>
+            <sect4><title>如何获得某个文件下面的文件（和子文件夹）</title>
+                <para>相关的代码如下，供参考：</para>
+                <programlisting language="php">
+$dirHandler = opendir($fullPath);
+
+while(($filename = readdir($dirHandler)) !== false)
+{
+    if(($filename == ".") || ($filename == "..") )
+    {
+        //echo "omit filename=$filename";
+        continue;
+    }
+
+    echo "filename=". $filename";
+}
+closedir($dirHandler);
+                </programlisting>
+            </sect4>
+        </sect3>
+        <para></para>
+    </sect2>
+</sect1>

@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding="utf-8"?>
+
+<!DOCTYPE book
+[
+
+<!ENTITY cur_book_name      "language_summary" >
+<!ENTITY publish_date       "2015-05-07" >
+<!ENTITY release_version    "1.1" >
+
+<!ENTITY copyrith_year "2015" >
+<!ENTITY entity_common_multi_format     SYSTEM  "../../entity_common_multi_format.xml">
+<!ENTITY entity_common_publish_info     SYSTEM  "../../entity_common_publish_info.xml">
+]>
+
+<book version="5.0"
+    xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xl="http://www.w3.org/1999/xlink"
+    
+    xml:lang="zh_CN">
+
+<info>
+    <title>各种计算机语言简介和总结</title>
+    <subtitle></subtitle>
+    <keywordset>
+        <keyword>Python</keyword>
+        <keyword>C#</keyword>
+        <keyword>VBA</keyword>
+        <keyword>C++</keyword>
+        <keyword>Javascript</keyword>
+    </keywordset>
+
+    <abstract>
+        <para>本文主要介绍了各种计算机语言的分类和关系，以及记录了笔者对其中部分语言，如Word VBA,Excel VBA,Python,C++,Javascript,C#等，的心得和体会。</para>
+        &entity_common_multi_format;
+    </abstract>
+
+    <revhistory>
+        <revision>
+            <revnumber>&release_version;</revnumber>
+            <date>&publish_date;</date>
+            <revremark>
+                <orderedlist>
+                    <listitem>完成此文逻辑框架</listitem>
+                    <listitem>添加如何在Windows下的cmd环境下使用Python脚本</listitem>
+                    <listitem>添加了C++的内容</listitem>
+                    <listitem>添加了Javascript的内容</listitem>
+                    <listitem>添加了Word VBA的内容</listitem>
+                    <listitem>添加了Excel VBA的内容</listitem>
+                    <listitem>添加了Python的内容</listitem>
+                    <listitem>添加了C#的内容</listitem>
+                    <listitem>添加了Python的crifanLib.py的全部内容</listitem>
+                    <listitem>添加了C#的crifanLib.cs的全部内容</listitem>
+                    <listitem>添加了Python的BeautifulSoup心得</listitem>
+                    <listitem>已将Python移出至单独的book</listitem>
+                    <listitem>已将C#移出至单独的book</listitem>
+                    <listitem>添加为何高级语言不能直接操作硬件</listitem>
+                </orderedlist>
+            </revremark>
+            <authorinitials>crl</authorinitials>
+        </revision>
+    </revhistory>
+
+    &entity_common_publish_info;
+</info>
+
+<xi:include href="ch01_lan_intro.xml" />
+<xi:include href="ch02_script_lan.xml" />
+<xi:include href="ch03_uppper_lan.xml" />
+<xi:include href="ch04_web_lan.xml" />
+<xi:include href="reference.xml" />
+
+</book>

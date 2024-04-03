@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding="utf-8"?>
+
+<!DOCTYPE chapter
+[
+
+<!ENTITY % crl_ent PUBLIC "crl.ent" 'http://www.crifan.com/files/res/docbook/entity/crl.ent'>
+%crl_ent;
+
+]>
+
+<chapter
+    xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xl="http://www.w3.org/1999/xlink"
+    
+    xml:id="ch02_script_lan">
+<title>脚本语言</title>
+<abstract></abstract>
+    <sect1><title>脚本语言综述</title>
+        <para>脚本语言综述</para>
+        <para></para>
+        <para></para>
+        <para></para>
+        <para></para>
+        <para></para>
+    </sect1>
+    
+    <sect1 xml:id="lan.python"><title>Python语言总结</title>
+        <para>关于Python语言总结，已移至这里：<link xl:href="http://www.crifan.com/files/doc/docbook/python_summary/release/html/python_summary.html">Python语言总结</link></para>
+    </sect1>
+    
+    <xi:include href="ch02s2_word_vba.xml" />
+    <xi:include href="ch02s3_excel_vba.xml" />
+    <xi:include href="ch02s4_javascript.xml" />
+    <xi:include href="ch02s5_php.xml" />
+    <xi:include href="ch02s6_linux_shell.xml" />
+    <xi:include href="ch02s7_windows_bat.xml" />
+
+</chapter>
